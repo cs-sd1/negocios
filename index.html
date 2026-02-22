@@ -153,6 +153,53 @@ h1{
         font-size:24px;
     }
 }
+.btn-membro{
+    background:#d4af37;
+    color:#000;
+    padding:14px 30px;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#0b1f1a;
+    padding:30px;
+    border-radius:12px;
+    width:90%;
+    max-width:400px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.modal-content input{
+    padding:12px;
+    border-radius:6px;
+    border:none;
+}
+
+.btn-enviar{
+    background:#ffd700;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+}
 </style>
 </head>
 
@@ -204,12 +251,65 @@ h1{
         GARANTIR MINHA VAGA
     </a>
 </div>
-
+<button class="btn-membro" onclick="abrirFormulario()">
+Adquirir como Membro
+</button>
 </div>
 
 <div class="footer">
 © 2026 - MultSev Solução Digital
 </div>
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h2>Adquirir como Membro</h2>
+
+    <input type="text" id="nome" placeholder="Seu Nome" required>
+    
+    <input type="tel" id="numero" placeholder="Seu Número (com código do país)" required>
+    
+    <input type="text" id="membroDe" placeholder="Estou a adquirir como membro do:" required>
+    
+    <input type="text" id="codigo" placeholder="Código de Membro" required>
+
+    <button onclick="enviarWhatsApp()" class="btn-enviar">
+      Enviar através do WhatsApp
+    </button>
+
+    <p id="erro" style="color:red;"></p>
+  </div>
+</div>
+<script>
+function abrirFormulario(){
+    document.getElementById("modal").style.display = "flex";
+}
+
+function enviarWhatsApp(){
+    let nome = document.getElementById("nome").value.trim();
+    let numero = document.getElementById("numero").value.trim();
+    let membroDe = document.getElementById("membroDe").value.trim();
+    let codigo = document.getElementById("codigo").value.trim();
+    let erro = document.getElementById("erro");
+
+    if(nome === "" || numero === "" || membroDe === "" || codigo === ""){
+        erro.innerText = "Preencha todos os campos.";
+        return;
+    }
+
+    if(codigo !== "despertaremcristo"){
+        erro.innerText = "Código de membro inválido.";
+        return;
+    }
+
+    let mensagem = `Olá, meu nome é ${nome}.
+Meu número é ${numero}.
+Estou a adquirir como membro do: ${membroDe}.
+Código confirmado.`;
+
+    let url = "https://api.whatsapp.com/send?phone=244959622160&text=" + encodeURIComponent(mensagem);
+
+    window.open(url, "_blank");
+}
+</script>
 
 </body>
 </html>
